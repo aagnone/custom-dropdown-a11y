@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+button {
+  background: #525252;
+  width: 200px;
+  border: 1px solid black;
+  color: #fff;
+  padding: 0.6em 0;
+}
+p {
+  background: #525252;
+  width: 100%;
+  height: 1.5em;
+  padding: 0.3em;
+  margin: 0;
+  border-bottom: 1px solid black;
+  transition: background 0.4s ease;
+  color: #fff;
+}
+
+p:last-child {
+  border: none;
+}
+
+p:hover {
+  background: #333;
+}
+
+p:focus {
+  background: #777;
+}
+
+.menu {
+  border: 1px solid black;
+  width: 200px;
+}
