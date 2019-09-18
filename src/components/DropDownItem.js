@@ -1,14 +1,12 @@
 import React from "react";
+import createStyledElement from "./createStyledElement";
 
-const DropDownItem = React.forwardRef((props, ref) => (
-  <li
-    ref={ref}
-    onClick={props.click}
-    tabIndex="-1"
-    role="option"
-    aria-selected={props.isSelected}>
-    <p>{props.children}</p>
-  </li>
-));
+export default props => {
+  const { click, reference, ...passThroughProps } = props;
 
-export default DropDownItem;
+  return createStyledElement("a", {
+    ...passThroughProps,
+    onClick: click,
+    ref: reference
+  });
+};

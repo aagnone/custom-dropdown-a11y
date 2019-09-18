@@ -30,8 +30,8 @@ const FakeProduct = () => {
 
   const handleOpen = e => {
     //THIS DOESNT WORK...Need to focus the selected element when opened. or else the down arrow acts funky
-    debugger;
-    toggleDropDown(e, () => elRef.current[selected].current.focus());
+
+    toggleDropDown(e);
   };
 
   const handleSelect = (item, index) => {
@@ -48,6 +48,7 @@ const FakeProduct = () => {
   };
 
   const handleKeys = e => {
+    // need which as well
     if (isOpen) {
       switch (e.key) {
         case "ArrowDown":
@@ -125,9 +126,11 @@ const FakeProduct = () => {
           {items.map((item, i) => (
             <React.Fragment key={i}>
               <DropdownItem
-                ref={elRef.current[i]}
+                href="#"
+                reference={elRef.current[i]}
                 click={() => handleSelect(item, i)}
-                isSelected={i === selected}>
+                aria-selected={i === selected}
+                role="option">
                 {item}
               </DropdownItem>
             </React.Fragment>

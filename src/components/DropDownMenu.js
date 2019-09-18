@@ -2,14 +2,14 @@ import React from "react";
 
 const DropDownMenu = ({ show, keyDown, children, ...props }) => {
   return (
-    <ul
+    <div
       className="menu"
       onKeyDown={keyDown}
       style={{ display: show ? "block" : "none" }}
       {...props}
       aria-haspopup="listbox">
       {children}
-    </ul>
+    </div>
   );
 };
 
