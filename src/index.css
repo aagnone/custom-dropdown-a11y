@@ -30,11 +30,11 @@ p:last-child {
   border: none;
 }
 
-p:hover {
+li:hover p {
   background: #333;
 }
 
-p:focus {
+li:focus p {
   background: #777;
 }
 

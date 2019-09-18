@@ -15,11 +15,13 @@ const FakeProduct = () => {
   // int - what element is selected
   const [selected, setSelected] = useState(0);
 
-  //bringing in values from our fake context
   const {
-    appState: { isOpen, items, selectedItem },
+    isOpen,
+    items,
+    selectedItem,
     toggleDropDown,
-    selectItem
+    selectItem,
+    closeDropDown
   } = useContext(FakeContext);
 
   //creates list of DOM refs to focus
@@ -31,7 +33,6 @@ const FakeProduct = () => {
     toggleDropDown(e, () => elRef.current[selected].current.focus());
   };
 
-  // when you select the item what happens
   const handleSelect = (item, index) => {
     setSelected(index);
     selectItem(item);
@@ -42,13 +43,13 @@ const FakeProduct = () => {
   };
   const handleUpArrow = () => {
     selected > 0 && setSelected(selected - 1);
+    selected === 0 && closeDropdownHandler();
   };
 
   const handleKeys = e => {
     if (isOpen) {
       switch (e.key) {
         case "ArrowDown":
-          console.log("test");
           e.preventDefault();
           handleDownArrow();
           break;
@@ -57,17 +58,29 @@ const FakeProduct = () => {
           handleUpArrow();
           break;
         case "Escape":
-          toggleDropDown(e);
+          closeDropdownHandler();
+          toggleRef.current.focus();
           break;
         case "Enter":
+          e.preventDefault();
           handleSelect(items[selected], selected);
+          closeDropdownHandler();
           break;
         default:
           return e.key;
       }
       return;
     }
-    handleOpen(e);
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        handleOpen(e);
+        break;
+      case "Enter":
+        e.preventDefault();
+        handleOpen(e);
+        break;
+    }
   };
 
   useEffect(() => {
@@ -76,6 +89,17 @@ const FakeProduct = () => {
       console.log(selected);
     };
   }, [selected]);
+
+  const closeDropdownHandler = e => {
+    closeDropDown && closeDropDown(e);
+    toggleRef.current.focus();
+  };
+
+  useEffect(() => {
+    document.body.addEventListener("click", closeDropdownHandler);
+    return () =>
+      document.body.removeEventListener("click", closeDropdownHandler);
+  });
 
   return (
     <>

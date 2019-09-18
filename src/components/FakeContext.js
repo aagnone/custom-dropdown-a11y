@@ -3,35 +3,39 @@ import React, { createContext, useState } from "react";
 export const FakeContext = createContext();
 
 const FakeContextProvider = ({ children }) => {
-  const [appState, setState] = useState({
-    isOpen: false,
-    items: ["small", "medium", "large"],
-    selectedItem: ""
-  });
+  const [isOpen, setOpen] = useState(false);
+  const [items, setItems] = useState(["small", "medium", "large"]);
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const closeDropDown = () => {
+    setOpen(false);
+  };
+
+  const addItems = item => {
+    setItems([...items, item]);
+  };
 
   const toggleDropDown = (e, callback) => {
-    e.preventDefault();
-    setState(prevstate => ({ ...appState, isOpen: !prevstate.isOpen }));
+    e && e.preventDefault();
+    setOpen(!isOpen);
     //THIS DOESNT WORK...Need to focus the selected element when opened. or else the down arrow acts funky
     callback && callback();
   };
 
-  //consider splitting useState
-
   const selectItem = value => {
-    setState(prevstate => ({
-      ...appState,
-      isOpen: !prevstate.isOpen,
-      selectedItem: value
-    }));
+    setSelectedItem(value);
   };
 
   return (
     <FakeContext.Provider
       value={{
-        appState,
+        isOpen,
+        items,
+        selectedItem,
         toggleDropDown,
-        selectItem
+        selectItem,
+        closeDropDown,
+        addItems
       }}>
       {children}
     </FakeContext.Provider>
