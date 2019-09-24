@@ -29,8 +29,6 @@ const FakeProduct = () => {
   const toggleRef = useRef(null);
 
   const handleOpen = e => {
-    //THIS DOESNT WORK...Need to focus the selected element when opened. or else the down arrow acts funky
-
     toggleDropDown(e);
   };
 
@@ -48,22 +46,22 @@ const FakeProduct = () => {
   };
 
   const handleKeys = e => {
-    // need which as well
+    const keyPressed = e.key || e.which;
     if (isOpen) {
-      switch (e.key) {
-        case "ArrowDown":
+      switch (keyPressed) {
+        case "ArrowDown" || 40:
           e.preventDefault();
           handleDownArrow();
           break;
-        case "ArrowUp":
+        case "ArrowUp" || 38:
           e.preventDefault();
           handleUpArrow();
           break;
-        case "Escape":
+        case "Escape" || 27:
           closeDropdownHandler();
           toggleRef.current.focus();
           break;
-        case "Enter":
+        case "Enter" || 13:
           e.preventDefault();
           handleSelect(items[selected], selected);
           closeDropdownHandler();
@@ -73,16 +71,24 @@ const FakeProduct = () => {
       }
       return;
     }
-    switch (e.key) {
-      case "ArrowDown":
+
+    switch (keyPressed) {
+      case "ArrowDown" || 40:
         e.preventDefault();
         handleOpen(e);
         break;
-      case "Enter":
+      case "Enter" || 13:
         e.preventDefault();
         handleOpen(e);
         break;
+      default:
+        return;
     }
+  };
+
+  const closeDropdownHandler = e => {
+    closeDropDown && closeDropDown(e);
+    isOpen && toggleRef.current.focus();
   };
 
   useEffect(() => {
@@ -92,16 +98,16 @@ const FakeProduct = () => {
     };
   }, [selected]);
 
-  const closeDropdownHandler = e => {
-    closeDropDown && closeDropDown(e);
-    isOpen && toggleRef.current.focus();
-  };
-
   useEffect(() => {
     document.body.addEventListener("click", closeDropdownHandler);
     return () =>
       document.body.removeEventListener("click", closeDropdownHandler);
   });
+
+  useEffect(() => {
+    elRef.current[selected].current.focus();
+    return;
+  }, [isOpen]);
 
   return (
     <>
